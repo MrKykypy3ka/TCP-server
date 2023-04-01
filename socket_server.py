@@ -1,15 +1,25 @@
 import socket
 
-def start():
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+HOST = '192.168.50.69'  # Локальный IP-адрес
+PORT = 7000         # Порт
 
-    s.bind(('localhost', 3030))  # Привязываем серверный сокет к localhost и 3030 порту.
-    s.listen(1)  # Начинаем прослушивать входящие соединения
-    conn, addr = s.accept()  # Метод, который принимает входящее соединение.
+# Создаем сокет
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.bind((HOST, PORT))
+    s.listen()
 
-    while True:  # Создаем вечный цикл.
-        data = conn.recv(1024)  # Получаем данные из сокета.
-        if not data:
-            break
-        conn.sendall(data)  # Отправляем данные в сокет.
-        print(data.decode('utf-8'))  # Выводим информацию на печать.
+    print(f'Сервер запущен на порту {PORT}...')
+
+    # Бесконечный цикл ожидания клиентских подключений
+    while True:
+        conn, addr = s.accept()
+        with conn:
+            print(f'Подключение клиента: {addr}')
+            # Принимаем данные
+            file_data = conn.recv(1024)
+            # Сохраняем файл на диск
+            with open('data/input/data.json', 'wb') as f:
+                while file_data:
+                    f.write(file_data)
+                    file_data = conn.recv(1024)
+            print('Файл успешно получен.')

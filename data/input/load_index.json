@@ -1,0 +1,8 @@
+{
+  "WHITE": 0,
+  "GREEN": 0.25,
+  "YELLOW": 0.5,
+  "RED": 0.75,
+  "BROWN": 1,
+  "BLACK": -1
+}

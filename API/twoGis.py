@@ -3,7 +3,7 @@ import json
 from PIL import Image, ImageDraw
 
 
-def twoGis():
+def two_gis():
     link = 'https://routing.api.2gis.com/carrouting/6.0.0/global?key=1967db2b-de7d-46b3-b63a-ab040702a18a'
     headers = json.load(open("data/headers.json", "r"))
     data = open("data/data.json", "r").read()
@@ -20,7 +20,6 @@ def get_city():
     result = json.loads(question)
     with open('data/result.json', 'w', encoding='utf-8') as out_file:
         json.dump(result, out_file, separators=(', ', ': '), indent=4, ensure_ascii=False)
-
 
 
 def coordination():

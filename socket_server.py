@@ -1,15 +1,21 @@
+from dotenv import load_dotenv, find_dotenv
 import socket
+import os
 
-def start():
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+load_dotenv(find_dotenv())
+HOST = os.getenv('HOST')
+PORT = int(os.getenv('PORT'))
 
-    s.bind(('localhost', 3030))  # Привязываем серверный сокет к localhost и 3030 порту.
-    s.listen(1)  # Начинаем прослушивать входящие соединения
-    conn, addr = s.accept()  # Метод, который принимает входящее соединение.
-
-    while True:  # Создаем вечный цикл.
-        data = conn.recv(1024)  # Получаем данные из сокета.
-        if not data:
-            break
-        conn.sendall(data)  # Отправляем данные в сокет.
-        print(data.decode('utf-8'))  # Выводим информацию на печать.
+# Создаем сокет
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.bind((HOST, PORT))
+    s.listen()
+    print('Сервер запущен!')
+    while True:
+        conn, addr = s.accept()
+        with conn:
+            file_data = conn.recv(1024)
+            with open('data/input/data.json', 'wb') as f:
+                while file_data:
+                    f.write(file_data)
+                    file_data = conn.recv(1024)

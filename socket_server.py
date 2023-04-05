@@ -16,7 +16,8 @@ def start():
             conn, addr = s.accept()
             with conn:
                 file_data = conn.recv(1024)
-                with open('data/input/data.json', 'wb') as f:
+                number = len(os.listdir('data/input'))
+                with open(f'data/input/data{number + 1}.json', 'wb') as f:
                     while file_data:
                         f.write(file_data)
                         file_data = conn.recv(1024)

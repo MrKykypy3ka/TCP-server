@@ -1,5 +1,4 @@
 import math
-
 from PIL import Image
 import os
 import cv2
@@ -10,13 +9,15 @@ def color_load():
     number = len(os.listdir('data/output/maps'))
     name = f'data/output/maps/map{number}.png'
     im = Image.open(name).convert('RGB')
-    result = Image.new('RGB', im.size)
-    center = im.getpixel((51, 51))
+    center = im.getpixel((101, 101))
+    # result = Image.new('RGB',color=center, size=im.size)
+    # result.save(f'data/output/maps/color{number}.png')
+    os.remove(name)
     return distance_color(center)
 
 
 def distance_color(color_map):
-    with open("C:/Users/Олег/PycharmProjects/TCP-server/data/input/color_road.json") as file:
+    with open("data/input/color_road.json") as file:
         COLORS = json.load(file)
     for color in COLORS:
         COLORS[color] = list(map(int,COLORS[color].split()))

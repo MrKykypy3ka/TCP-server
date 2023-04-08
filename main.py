@@ -15,7 +15,7 @@ def check_coordination(current_time):
             for zone in data[area]:
                 for coor in data[area][zone]:
                     temp_coor = list(map(float, coor.split()))
-                    get_map(longitude=temp_coor[0], latitude=temp_coor[1], map_parameters='trf', scale='2')
+                    get_map(longitude=temp_coor[0], latitude=temp_coor[1], map_parameters='trf', scale='3')
                     load_index = color_load()
                     with open('data/output/load.csv', 'a', encoding='utf=8') as file:
                         file.write(f'\n{area}, {zone}, {temp_coor[0]}, {temp_coor[1]}, {False}, {date}, {current_time}, {load_index}')
@@ -23,7 +23,7 @@ def check_coordination(current_time):
 
 def check_time(current_time):
     global data
-    with open('data/input/data4.json') as file:
+    with open('data/input/data.json') as file:
         data = json.load(file)
     # for time_l in data['settings']['time']:
         # if time == current_time:
@@ -31,13 +31,17 @@ def check_time(current_time):
     check_coordination(current_time)
 
 
-def main():
-    # start()
+def analyse():
     while True:
         check_time(strftime("%H:%M", localtime()))
         print("Complete")
         break
         # sleep(60)
+
+
+def main():
+    # start()
+    analyse()
 
 
 if __name__ == "__main__":

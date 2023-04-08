@@ -4,11 +4,16 @@ from PIL import Image, ImageDraw
 import os
 
 
-def get_map(longitude, latitude, map_parameters, scale, longitude_spn=0.005, latitude_spn=0.005, w=201, h=201):
+def get_map(longitude, latitude, map_parameters, scale, longitude_spn=0.005, latitude_spn=0.005, w=401, h=401):
     number = len(os.listdir('data/output/maps'))
     name = f'data/output/maps/map{number+1}.png'
-    link = f'https://static-maps.yandex.ru/1.x/?ll={longitude},{latitude}' \
-           f'&size={w},{h}&spn={longitude_spn},{latitude_spn}&l={map_parameters}&scale={scale}'
+    link = f'https://static-maps.yandex.ru/1.x/' \
+           f'?ll={longitude},{latitude}' \
+           f'&size={w},{h}' \
+           f'&spn={longitude_spn},{latitude_spn}' \
+           f'&l={map_parameters}' \
+           f'&scale={scale}' \
+           f'&z={17}'
     question = requests.get(url=link, stream=True)
     with open(name, 'wb') as out_file:
         shutil.copyfileobj(question.raw, out_file)

@@ -9,10 +9,10 @@ def color_load():
     number = len(os.listdir('data/output/maps'))
     name = f'data/output/maps/map{number}.png'
     im = Image.open(name).convert('RGB')
-    center = im.getpixel((101, 101))
+    center = im.getpixel((201, 201))
     # result = Image.new('RGB',color=center, size=im.size)
     # result.save(f'data/output/maps/color{number}.png')
-    os.remove(name)
+    # os.remove(name)
     return distance_color(center)
 
 

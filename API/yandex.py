@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw
 import os
 
 
-def get_map(longitude, latitude, map_parameters, scale, longitude_spn=0.005, latitude_spn=0.005, w=401, h=401):
+def get_map(longitude, latitude, map_parameters, scale, longitude_spn=0.005, latitude_spn=0.005, w=402, h=402):
     number = len(os.listdir('data/output/maps'))
     name = f'data/output/maps/map{number+1}.png'
     link = f'https://static-maps.yandex.ru/1.x/' \

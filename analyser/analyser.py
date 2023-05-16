@@ -8,11 +8,13 @@ import json
 def color_load():
     number = len(os.listdir('data/output/maps'))
     name = f'data/output/maps/map{number}.png'
-    im = Image.open(name).convert('RGB')
-    center = im.getpixel((201, 201))
+    im = Image.open(name).convert('RGBA')
+    im2 = Image.open('data/input/white.png').convert('RGB')
+    im2.paste(im, (0, 0), im)
+    center = im2.getpixel((201, 201))
     # result = Image.new('RGB',color=center, size=im.size)
     # result.save(f'data/output/maps/color{number}.png')
-    # os.remove(name)
+    os.remove(name)
     return distance_color(center)
 
 
@@ -20,7 +22,7 @@ def distance_color(color_map):
     with open("data/input/color_road.json") as file:
         COLORS = json.load(file)
     for color in COLORS:
-        COLORS[color] = list(map(int,COLORS[color].split()))
+        COLORS[color] = list(map(int, COLORS[color].split()))
 
     distance = 442
     current_color = ""

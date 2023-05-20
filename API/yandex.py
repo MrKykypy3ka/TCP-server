@@ -6,7 +6,7 @@ import os
 
 def get_map(longitude, latitude, map_parameters, scale, longitude_spn=0.005, latitude_spn=0.005, w=402, h=402):
     number = len(os.listdir('data/output/maps'))
-    name = f'data/output/maps/map{number+1}.png'
+    filename = f'data/output/maps/map{number+1}.png'
     link = f'https://static-maps.yandex.ru/1.x/' \
            f'?ll={longitude},{latitude}' \
            f'&size={w},{h}' \
@@ -15,7 +15,7 @@ def get_map(longitude, latitude, map_parameters, scale, longitude_spn=0.005, lat
            f'&scale={scale}' \
            f'&z={17}'
     question = requests.get(url=link, stream=True)
-    with open(name, 'wb') as out_file:
+    with open(filename, 'wb') as out_file:
         shutil.copyfileobj(question.raw, out_file)
 
 

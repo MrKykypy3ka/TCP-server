@@ -1,1 +1,1 @@
-from analyser import analyser
+from analyser import analyser_map

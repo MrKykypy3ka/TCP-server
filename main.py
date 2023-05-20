@@ -1,5 +1,5 @@
 from socket_server import start
-from analyser.analyser import *
+from analyser.analyser_map import *
 from API.yandex import *
 from time import *
 import datetime

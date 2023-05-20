@@ -6,15 +6,12 @@ import json
 
 
 def color_load():
-    number = len(os.listdir('data/output/maps'))
-    name = f'data/output/maps/map{number}.png'
-    im = Image.open(name).convert('RGBA')
+    filename = f'data/output/maps/map.png'
+    im = Image.open(filename).convert('RGBA')
     im2 = Image.open('data/input/white.png').convert('RGB')
     im2.paste(im, (0, 0), im)
     center = im2.getpixel((201, 201))
-    # result = Image.new('RGB',color=center, size=im.size)
-    # result.save(f'data/output/maps/color{number}.png')
-    os.remove(name)
+    os.remove(filename)
     return distance_color(center)
 
 
@@ -23,7 +20,6 @@ def distance_color(color_map):
         COLORS = json.load(file)
     for color in COLORS:
         COLORS[color] = list(map(int, COLORS[color].split()))
-
     distance = 442
     current_color = ""
     for color in COLORS:
@@ -41,7 +37,7 @@ def trafficlight(im1, im2):
     haystack = cv2.imread(im2)
     result = cv2.matchTemplate(needle, haystack, cv2.TM_CCOEFF_NORMED)
     minVal, maxVal, minLoc, maxLoc = cv2.minMaxLoc(result)
-    return True if maxVal > 0.6 else False
+    return 1 if maxVal > 0.6 else 0
 
 
 if __name__ == "__main__":

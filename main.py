@@ -1,5 +1,6 @@
 from socket_server import start
 from analyser.analyser_map import *
+from analyser.start_analyse import start
 from API.yandex import *
 from time import *
 import datetime
@@ -30,15 +31,21 @@ def check_time(current_time):
             print(time_l, current_time)
             check_coordination(current_time)
 
+def check_date(date):
+    return True if date != datetime.datetime.now().date() else False
 
 def analyse():
-    while True:
+    d, m, y = map(int, data['settings']['date'][1].split('.'))
+    date_end = (datetime.date(y, m, d) + datetime.timedelta(days=1)).strftime("%d.%m.%Y")
+    print(date_end)
+    while check_date(date_end):
         check_time(strftime("%H:%M", localtime()))
         sleep(60)
 
 
 def main():
-    analyse()
+    # analyse()
+    start()
 
 
 if __name__ == "__main__":

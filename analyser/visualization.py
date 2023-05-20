@@ -1,9 +1,11 @@
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 
+
 def create_custom_colormap(colors):
     colormap = ListedColormap(colors)
     return colormap
+
 
 def save_pivot_table_as_image(pivot_table, file_path, cmap='YlGnBu', name_table='Сводная таблица'):
     fig, ax = plt.subplots(figsize=(10, 6))

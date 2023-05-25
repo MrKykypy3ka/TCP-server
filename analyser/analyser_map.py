@@ -6,7 +6,7 @@ import json
 
 
 def color_load():
-    filename = f'data/output/maps/map.png'
+    filename = f'data/results/maps/map1.png'
     im = Image.open(filename).convert('RGBA')
     im2 = Image.open('data/input/white.png').convert('RGB')
     im2.paste(im, (0, 0), im)

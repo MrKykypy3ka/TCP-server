@@ -7,7 +7,7 @@ HOST = os.getenv('HOST')
 PORT = int(os.getenv('PORT'))
 
 
-def start():
+def start_server():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
         s.listen()

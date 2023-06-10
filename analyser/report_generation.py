@@ -14,7 +14,7 @@ def save_tables_and_images_to_word(table1, table2, table3, table4, image1, image
     for section in sections:
         section.top_margin = Cm(2)
         section.bottom_margin = Cm(2)
-        section.left_margin = Cm(3)
+        section.left_margin = Cm(1)
         section.right_margin = Cm(1)
 
     # Стиль текста
@@ -53,8 +53,7 @@ def save_tables_and_images_to_word(table1, table2, table3, table4, image1, image
         for j, column_name in enumerate(table1.columns):
             value = table1.loc[row_name, column_name]
             if not pd.isnull(value):
-                rounded_value = round(value, 4)
-                row_cells[j + 1].text = str(Decimal(rounded_value).quantize(Decimal('0.000')))
+                row_cells[j + 1].text = str(value)
             else:
                 row_cells[j + 1].text = '-'
 
@@ -80,8 +79,7 @@ def save_tables_and_images_to_word(table1, table2, table3, table4, image1, image
         for j, column_name in enumerate(table2.columns):
             value = table2.loc[row_name, column_name]
             if not pd.isnull(value):
-                rounded_value = round(value, 3)
-                row_cells[j + 1].text = str(Decimal(rounded_value).quantize(Decimal('0.000')))
+                row_cells[j + 1].text = str(value)
             else:
                 row_cells[j + 1].text = '-'
 
@@ -101,8 +99,7 @@ def save_tables_and_images_to_word(table1, table2, table3, table4, image1, image
         table.add_row()
         table.cell(i + 1, 0).text = str(index)
         for j, value in enumerate(row):
-            rounded_value = round(value, 3)
-            table.cell(i + 1, j + 1).text = str(Decimal(rounded_value).quantize(Decimal('0.000')))
+            table.cell(i + 1, j + 1).text = str(value)
 
     # Заголовок 4 и таблица 4
     doc.add_paragraph()
@@ -120,8 +117,7 @@ def save_tables_and_images_to_word(table1, table2, table3, table4, image1, image
         table.add_row()
         table.cell(i + 1, 0).text = str(index)
         for j, value in enumerate(row):
-            rounded_value = round(value, 3)
-            table.cell(i + 1, j + 1).text = str(Decimal(rounded_value).quantize(Decimal('0.000')))
+            table.cell(i + 1, j + 1).text = str(value)
 
     # Вставка изображения 1
     doc.add_paragraph()
@@ -131,7 +127,7 @@ def save_tables_and_images_to_word(table1, table2, table3, table4, image1, image
     # Вставка изображения 2
     doc.add_paragraph()
     doc.add_heading('Ситуация на дороге после перекрытия дорог с учетом дней недели', level=1).style = heading_style
-    doc.add_picture(image2, width=Cm(9), height=Cm(11))
+    doc.add_picture(image2, width=Cm(19.5), height=Cm(12.5))
 
     # Сохранение файла Word
     doc.save(output_file)

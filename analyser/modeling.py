@@ -7,6 +7,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 import math
+import json
 
 
 def distribute_value_gaussian(value, k, mean=0, std=1):
@@ -18,9 +19,18 @@ def distribute_value_gaussian(value, k, mean=0, std=1):
 
     values = np.array(values)
     values = values / np.sum(values)  # Нормализация суммы значений до 1
-
     distributed_values = values * value
     return distributed_values.tolist()
+
+
+def load_user_koef(index, value, k):
+    with open('data/input/2022.json', encoding='utf-8') as file:
+        data = json.load(file)[index]['k']
+    if len(data) == data.count(0):
+        return 0
+    for i in range(k):
+        data[i] *= value
+    return data
 
 def count_not_nan(row):
     count = 0
@@ -33,7 +43,10 @@ def result_all_time(pivot_table):
     table = pivot_table.drop('bad', axis=1)
     for index, row in table.iterrows():
         k = count_not_nan(row)
-        distributed_values = distribute_value_gaussian(pivot_table.loc[index, 'bad'], k)
+        distributed_values = load_user_koef(index, pivot_table.loc[index, 'bad'], k)
+        if not distributed_values:
+            distributed_values = distribute_value_gaussian(pivot_table.loc[index, 'bad'], k)
+            distributed_values.sort(reverse=True)
         i = 0
         for column in table.columns:
             if table.loc[index, column] > 0:
@@ -41,7 +54,7 @@ def result_all_time(pivot_table):
                 i += 1
     return table
 
-def result_date(pivot_table):
+def result_date_and_time(pivot_table):
     table = pivot_table.drop(index='bad', level='type_of_road')
     for column in table.columns:
         for area in table.index.get_level_values('area').unique():
@@ -54,6 +67,3 @@ def result_date(pivot_table):
                         table.loc[(area, road_type), column] += distributed_values[i]
                         i += 1
     return table
-
-def result_time(pivot_table):
-    pass

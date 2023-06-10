@@ -9,30 +9,33 @@ def change_date(date):
     ans = datetime.date(year, month, day)
     temp_date = ans.strftime("%A")
     if temp_date == 'Monday':
-        return 1
+        return 'ПН'
     elif temp_date == 'Tuesday':
-        return 2
+        return 'ВТ'
     elif temp_date == 'Wednesday':
-        return 3
+        return 'СР'
     elif temp_date == 'Thursday':
-        return 4
+        return 'ЧТ'
     elif temp_date == 'Friday':
-        return 5
+        return 'ПТ'
     elif temp_date == 'Saturday':
-        return 6
+        return 'СБ'
     elif temp_date == 'Sunday':
-        return 7
-
+        return 'ВС'
 
 def generate_pivot_table(df):
 
     group_all_time = df.groupby(['area', 'type_of_road'])['load_index'].mean()
     pivot_table_all_time = group_all_time.unstack()  # all_time
+    #pivot_table_all_time = pivot_table_all_time.fillna("-")
 
     group_date = df.groupby(['area', 'type_of_road', 'date'])['load_index'].mean()
     pivot_table_date = group_date.unstack()  # date
+    #pivot_table_date = pivot_table_date.fillna("-")
+    pivot_table_date = pivot_table_date.reindex(columns=['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'])
 
     group_time = df.groupby(['area', 'type_of_road', 'time'])['load_index'].mean()
     pivot_table_time = group_time.unstack()  # date
+    #pivot_table_time = pivot_table_time.fillna("-")
 
     return pivot_table_all_time, pivot_table_date, pivot_table_time

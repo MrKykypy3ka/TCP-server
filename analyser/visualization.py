@@ -5,19 +5,20 @@ def create_custom_colormap(colors):
     colormap = ListedColormap(colors)
     return colormap
 
-def save_pivot_table_as_image(pivot_table, file_path, cmap='YlGnBu', name_table='Сводная таблица', fontsize=10):
+def save_pivot_table_as_image(pivot_table, file_path, cmap='YlGnBu', name_table='Сводная таблица', name_column='Объезд', fontsize=10, rotation=0):
     fig, ax = plt.subplots(figsize=(10, 6))
     heatmap = ax.imshow(pivot_table, cmap=cmap)
     ax.set_xticks(range(len(pivot_table.columns)))
     ax.set_yticks(range(len(pivot_table.index)))
     ax.set_xticklabels(pivot_table.columns)
     ax.set_yticklabels(pivot_table.index)
-    ax.set_xlabel('Объездной участок')
+    ax.set_xlabel(name_column)
     ax.set_ylabel('Ремонтируемые зоны')
     ax.set_title(name_table)
     cbar = plt.colorbar(heatmap)
     cbar.set_label('Нагрузка')
     ax.set_xticklabels(pivot_table.columns, fontsize=fontsize)
+    ax.set_xticklabels(pivot_table.columns, rotation=rotation)
     for i in range(len(pivot_table.index)):
         for j in range(len(pivot_table.columns)):
             value = pivot_table.iloc[i, j]

@@ -6,6 +6,9 @@ from time import *
 import datetime
 import json
 
+data = None
+color_index = None
+
 def load_data():
     global data
     global color_index
@@ -47,13 +50,11 @@ def analyse():
 
 
 def main():
-    # start_server()
-    # load_data()
-    # analyse()
+    start_server()
+    load_data()
+    analyse()
     start()
 
 
 if __name__ == "__main__":
-    data = None
-    color_index = None
     main()

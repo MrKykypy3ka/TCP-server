@@ -1,10 +1,11 @@
 from analyser.analyser_map import *
 from analyser.start_analyse import start
-from socket_server import start_server
+from socket_server import *
 from API.yandex import *
 from time import *
 import datetime
 import json
+import threading
 
 data = None
 color_index = None
@@ -50,10 +51,12 @@ def analyse():
 
 
 def main():
-    start_server()
-    load_data()
-    analyse()
-    start()
+    server_thread = threading.Thread(target=start_server)
+    server_thread.start()
+    # start_server()
+    # load_data()
+    # analyse()
+    # start()
 
 
 if __name__ == "__main__":

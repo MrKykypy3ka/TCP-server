@@ -1,15 +1,14 @@
 import pandas as pd
-from analyser.data_cleaning import change_date, change_time, generate_pivot_table
-from analyser.modeling import result_date_and_time, result_all_time
-from analyser.visualization import create_custom_colormap, save_pivot_table_as_image
-from analyser.report_generation import save_tables_and_images_to_word
+from working_with_data.data_cleaning import change_date, change_time, generate_pivot_table
+from working_with_data.modeling import result_date_and_time, result_all_time
+from working_with_data.data_visualization import create_custom_colormap, save_pivot_table_as_image
+from working_with_data.report_generation import save_tables_and_images_to_word
 import os
 
 def start():
     pd.set_option('display.max_columns', None)
     pd.options.display.width = pd.options.display.max_columns = None
-
-    df = pd.read_csv("data/results/loaddd.csv")
+    df = pd.read_csv("data/results/load.csv")
     df['date'] = df['date'].apply(change_date)
     pivot_table_all_time, pivot_table_date, pivot_table_time = generate_pivot_table(df)
     table1 = result_all_time(pivot_table_all_time).fillna(0).multiply(100).astype(int)

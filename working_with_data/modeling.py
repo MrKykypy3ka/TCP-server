@@ -1,12 +1,4 @@
-import pandas as pd
 import numpy as np
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_absolute_error
-from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-import math
 import json
 
 
@@ -16,9 +8,8 @@ def distribute_value_gaussian(value, k, mean=0, std=1):
         sample = np.random.normal(mean, std)
         if sample > 0:
             values.append(sample)
-
     values = np.array(values)
-    values = values / np.sum(values)  # Нормализация суммы значений до 1
+    values = values / np.sum(values)
     distributed_values = values * value
     return distributed_values.tolist()
 
@@ -26,7 +17,7 @@ def distribute_value_gaussian(value, k, mean=0, std=1):
 def load_user_koef(index, value, k):
     with open('data/input/2022.json', encoding='utf-8') as file:
         data = json.load(file)[index]['k']
-    if len(data) == data.count(0):
+    if len(data) == data.count(1):
         return 0
     for i in range(k):
         data[i] *= value

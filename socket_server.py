@@ -2,7 +2,6 @@ from dotenv import load_dotenv, find_dotenv
 import socket
 import pickle
 import os
-import io
 import threading
 
 load_dotenv(find_dotenv())
@@ -27,7 +26,7 @@ def handle_client(conn, addr):
         elif request == "S_F":
             conn.sendall("OK".encode())
             filename = conn.recv(1024).decode()
-            receive_file(conn, filename)
+            get_file(conn, filename)
         elif 'R_F' in request:
             filename = request.split()[1]
             send_file(conn, filename)
@@ -38,7 +37,7 @@ def handle_client(conn, addr):
     finally:
         conn.close()
 
-def receive_file(conn, filename):
+def get_file(conn, filename):
     with open(f'data/input/{filename}', 'wb') as f:
         while True:
             file_data = conn.recv(1024)
@@ -47,9 +46,7 @@ def receive_file(conn, filename):
             f.write(file_data)
 
 def send_file_list(conn):
-    directory = 'data/results'
-    desired_formats = ['.docx', '.csv']
-    file_list = [file for file in os.listdir(directory) if os.path.splitext(file)[1] in desired_formats]
+    file_list = [file for file in os.listdir('data/results') if os.path.splitext(file)[1] in ['.docx', '.csv']]
     try:
         file_list_data = pickle.dumps(file_list)
         conn.sendall(file_list_data)
@@ -64,5 +61,4 @@ def send_file(conn, filename):
             if not data:
                 break
             conn.sendall(data)
-
     print(f"Файл '{filename}' отправлен.")

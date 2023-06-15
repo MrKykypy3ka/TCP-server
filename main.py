@@ -1,5 +1,5 @@
-from analyser.analyser_map import *
-from analyser.start_analyse import start
+from working_with_data.map_analysis import *
+from working_with_data.data_analysis import start
 from socket_server import *
 from API.yandex import *
 from time import *
@@ -29,7 +29,7 @@ def check_coordination(current_time):
                         temp_coor = list(map(float, coor.split()))
                         get_map(longitude=temp_coor[0], latitude=temp_coor[1], map_parameters='trf', scale='3')
                         load_index = color_load()
-                        with open('data/results/load.csv', 'a', encoding='utf=8') as file:
+                        with open('data/results/2022.csv', 'a', encoding='utf=8') as file:
                             file.write(f'\n{area},{zone},{temp_coor[0]},{temp_coor[1]},{False},{date},{current_time},{color_index[load_index]}')
 
 

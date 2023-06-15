@@ -38,14 +38,3 @@ def trafficlight(im1, im2):
     result = cv2.matchTemplate(needle, haystack, cv2.TM_CCOEFF_NORMED)
     minVal, maxVal, minLoc, maxLoc = cv2.minMaxLoc(result)
     return 1 if maxVal > 0.6 else 0
-
-
-if __name__ == "__main__":
-    # os.chdir(r'C:\Users\olegm\Documents\GitHub\road')
-    os.chdir(r'C:\Users\Олег\PycharmProjects\road')
-    with open("C:/Users/Олег/PycharmProjects/TCP-server/data/input/color_road.json") as file:
-        COLORS = json.load(file)
-    for color in COLORS:
-        COLORS[color] = list(map(int,COLORS[color].split()))
-    print(COLORS)
-

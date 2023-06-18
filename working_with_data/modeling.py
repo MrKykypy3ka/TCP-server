@@ -1,60 +1,50 @@
-import numpy as np
+import math
 import json
 
-
-def distribute_value_gaussian(value, k, mean=0, std=1):
+def distribute_value_gaussian(num_segments, k):
+    mean = 0.5
+    std_dev = 0.2
+    total_sum = 0
     values = []
-    while len(values) < k:
-        sample = np.random.normal(mean, std)
-        if sample > 0:
-            values.append(sample)
-    values = np.array(values)
-    values = values / np.sum(values)
-    distributed_values = values * value
-    return distributed_values.tolist()
+    for i in range(1, num_segments + 1):
+        x = i / (num_segments + 1)
+        exponent = -((x - mean) ** 2) / (2 * std_dev ** 2)
+        value = (1 / (math.sqrt(2 * math.pi) * std_dev)) * math.exp(exponent)
+        values.append(value)
+        total_sum += value
+    values = [value / total_sum for value in values]
+    values.sort(reverse=True)
+    for i, key in zip(range(len(k)), k):
+        k[key] = values[i]
+    return k
 
-
-def load_user_koef(index, value, k):
-    with open('data/input/2022.json', encoding='utf-8') as file:
-        data = json.load(file)[index]['k']
-    if len(data) == data.count(1):
-        return 0
-    for i in range(k):
-        data[i] *= value
-    return data
-
-def count_not_nan(row):
-    count = 0
-    for elem in row:
-        if elem > 0:
-            count += 1
-    return count
-
-def result_all_time(pivot_table):
+def result_all_time(pivot_table, filename):
     table = pivot_table.drop('bad', axis=1)
-    for index, row in table.iterrows():
-        k = count_not_nan(row)
-        distributed_values = load_user_koef(index, pivot_table.loc[index, 'bad'], k)
-        if not distributed_values:
-            distributed_values = distribute_value_gaussian(pivot_table.loc[index, 'bad'], k)
-            distributed_values.sort(reverse=True)
-        i = 0
+    for area, row in table.iterrows():
+        with open(f'data/input/{filename}', encoding='utf-8') as file:
+            k = json.load(file)[area]['k']
+            num_segments = list(k.values()).count(0)
+            if num_segments == len(k):
+                k = distribute_value_gaussian(num_segments, k)
         for column in table.columns:
-            if table.loc[index, column] > 0:
-                table.loc[index, column] += distributed_values[i]
-                i += 1
+            if table.loc[area, column] > 0:
+                print(pivot_table.loc[area, 'bad'], k[column])
+                print(table.loc[area, column])
+                table.loc[area, column] += pivot_table.loc[area, 'bad'] * k[column]
+                print(table.loc[area, column])
+                print()
     return table
 
-def result_date_and_time(pivot_table):
+def result_date_and_time(pivot_table, filename):
     table = pivot_table.drop(index='bad', level='type_of_road')
-    for column in table.columns:
-        for area in table.index.get_level_values('area').unique():
-            i = 0
-            for road_type in table.index.get_level_values('type_of_road').unique():
-                if (area, road_type) in table.index:
-                    k = table.loc[area].shape[0]
-                    distributed_values = distribute_value_gaussian(pivot_table.loc[(area, 'bad'), column], k)
-                    if table.loc[(area, road_type), column] > 0:
-                        table.loc[(area, road_type), column] += distributed_values[i]
-                        i += 1
+    for area, row in table.iterrows():
+        with open(f'data/input/{filename}', encoding='utf-8') as file:
+            k = json.load(file)[area[0]]['k']
+            num_segments = list(k.values()).count(0)
+            if num_segments == len(k):
+                k = distribute_value_gaussian(num_segments, k)
+        print(k)
+        for column in table.columns:
+            print(pivot_table.loc[(area[0], 'bad'), column])
+            table.loc[area, column] += pivot_table.loc[(area[0], 'bad'), column] * k[area[1]]
     return table

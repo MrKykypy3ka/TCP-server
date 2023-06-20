@@ -83,5 +83,6 @@ def main():
     data_collection_thread = threading.Thread(target=data_collection)
     data_collection_thread.start()
 
+
 if __name__ == "__main__":
     main()
